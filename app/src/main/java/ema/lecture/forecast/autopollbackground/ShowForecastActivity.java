@@ -132,7 +132,6 @@ public class ShowForecastActivity extends Activity {
     if ((ipIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1) != 0) && (ipIntent.getIntExtra(ConnectivityManager.EXTRA_NETWORK_TYPE,-1) == 1))
     {
       intervall = 5;
-
     }
     else if((ipIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1) <= 10) || (ipIntent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false)))
     {

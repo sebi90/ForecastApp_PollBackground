@@ -18,6 +18,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class FetchAndBroadcastWeatherService extends Service {
+  //private static final InetSocketAddress SERVER = new InetSocketAddress("192.168.56.1", 4711);
   private static final InetSocketAddress SERVER = new InetSocketAddress("10.0.2.2", 4711);
 
   public static final String BC_ACT_FETCH_STARTED = "ema.lecture.forecast.bc.FETCH_STARTED";
@@ -59,6 +60,11 @@ public class FetchAndBroadcastWeatherService extends Service {
   public void init()
   {
     if(intervall != -1) {
+      if(this.execSrv != null)
+      {
+        execSrv.shutdown();
+        execSrv = null;
+      }
       this.execSrv = Executors.newSingleThreadScheduledExecutor();
       this.execSrv.scheduleAtFixedRate(new Runnable() {
         @Override
