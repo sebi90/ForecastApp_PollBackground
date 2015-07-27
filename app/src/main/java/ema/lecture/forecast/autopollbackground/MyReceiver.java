@@ -13,8 +13,6 @@ public class MyReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
 
         context.startService(new Intent(context, FetchAndBroadcastWeatherService.class));
-
-
     }
 
 }

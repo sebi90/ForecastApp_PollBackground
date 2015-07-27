@@ -28,10 +28,11 @@ public class ShowForecastActivity extends Activity {
 
   private boolean mBounded;
   private FetchAndBroadcastWeatherService mService;
+  public static String BUTTON_CLICKED = "Button_Clicked";
 
   private int intervall = 10;
 
-  @Override
+  /*@Override
   protected void onStart() {
     super.onStart();
     Intent mIntent = new Intent(this, FetchAndBroadcastWeatherService.class);
@@ -63,6 +64,7 @@ public class ShowForecastActivity extends Activity {
     }
   };
 
+  */
 
 
   private final BroadcastReceiver weatherReceiver = new BroadcastReceiver() {
@@ -87,6 +89,7 @@ public class ShowForecastActivity extends Activity {
     this.tvWeather = (TextView) this.findViewById(R.id.tvWeather);
     this.buttonRefresh = (Button) this.findViewById(R.id.buttonRefresh);
 
+    this.startService(new Intent(this, FetchAndBroadcastWeatherService.class));
   }
 
   @Override protected void onResume() {
@@ -196,11 +199,13 @@ public class ShowForecastActivity extends Activity {
     this.setProgressBarIndeterminateVisibility(true);
     this.buttonRefresh.setEnabled(false);
 
-    if (mService != null)
+    /*if (mService != null)
     {
       myAsyncTask t = new myAsyncTask();
       t.execute();
     }
+    */
+    sendBroadcast(new Intent(ShowForecastActivity.BUTTON_CLICKED));
   }
 
   //

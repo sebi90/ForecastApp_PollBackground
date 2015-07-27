@@ -11,7 +11,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -29,6 +33,18 @@ public class FetchAndBroadcastWeatherService extends Service {
 
   private ScheduledExecutorService execSrv;
 
+  private final BroadcastReceiver button_clicked = new BroadcastReceiver() {
+    @Override
+    public void onReceive(Context context, Intent intent) {
+
+      new Thread(new Runnable() {
+        @Override
+        public void run() {
+         FetchAndBroadcastWeatherService.this.fetchAndBroadcastWeather();
+        }
+      });
+    }
+  };
 
   private int intervall = 10;
 
@@ -37,13 +53,15 @@ public class FetchAndBroadcastWeatherService extends Service {
     this.intervall = intervall;
   }
 
-  private IBinder mBinder = new LocalBinder();
+  //private IBinder mBinder = new LocalBinder();
 
   @Override
   public IBinder onBind(Intent intent) {
-    return mBinder;
+    return null;
+    //return mBinder;
   }
 
+  /*
   public class LocalBinder extends Binder
   {
     public FetchAndBroadcastWeatherService getService()
@@ -52,8 +70,13 @@ public class FetchAndBroadcastWeatherService extends Service {
     }
   }
 
+*/
   @Override public void onCreate() {
     Log.d("myTag", "Weather Service onCreate");
+    final IntentFilter filter = new IntentFilter();
+    filter.addAction(ShowForecastActivity.BUTTON_CLICKED);
+
+    registerReceiver(button_clicked, filter);
     init();
   }
 
@@ -79,6 +102,7 @@ public class FetchAndBroadcastWeatherService extends Service {
       Log.d("myTag" ,"execSrv shutdown");
       execSrv.shutdownNow();
     }
+
   }
 
   @Override public void onDestroy() {
